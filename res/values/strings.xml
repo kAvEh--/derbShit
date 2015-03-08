@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Derbi</string>
+    <string name="title_activity_opleader_board">OPLeaderBoardActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="positions">
+        <item>دروازه‌بان</item>
+        <item>مدافع</item>
+        <item>هافبک</item>
+        <item>مهاجم</item>
+    </string-array>
+
+    
+    <!-- strings of questions -->
+</resources>
