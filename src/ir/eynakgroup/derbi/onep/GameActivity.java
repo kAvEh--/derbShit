@@ -1,7 +1,6 @@
 package ir.eynakgroup.derbi.onep;
 
 import ir.eynakgroup.derbi.R;
-import ir.eynakgroup.derbi.util.PersianReshape;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,76 +18,185 @@ import android.widget.TextView;
 
 public class GameActivity extends FragmentActivity {
 	private TextView questionNumber;
-	private TextView score;
-	private TextView heartNumber;
-	private TextView question;
+	private TextView _score_layout;
+	private TextView _heart_layout;
+	private TextView _question_body;
 	private ProgressBar timer;
-	private Button[] choices;
-	private int questionNum = 0;
-	private boolean popupIsOn = false;
+	private ArrayList<Button> choices;
 
 	private ArrayList<String[]> questions;
 	private String fonts = "BNazanin.ttf";
 
 	// CountDownTimer counter;
 	long currentTime;
-	int time = 5;
+	int time = 10;
+	int time_step = 100;
 	int minimumTime = 3;
 	CountDownTimer counter;
 
-	int lastScore;
 	int hearts = 5;
+
+	boolean gameFlag = true;
+
+	int _question_counter = -1;
+
+	int _total_score = 0;
+
+	int _PACKAGE_NUM = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.one_player_question);
-		lastScore = 0;
 		questions = new ArrayList<String[]>();
+		String[] temp1 = { "???1", "O", "X1", "X1", "X1" };
+		String[] temp2 = { "???2", "O", "X2", "X2", "X2" };
+		String[] temp3 = { "???3", "O", "X3", "X3", "X3" };
+		String[] temp4 = { "???4", "O", "X4", "X4", "X4" };
+		String[] temp5 = { "???5", "O", "X5", "X5", "X5" };
+		String[] temp6 = { "???6", "O", "X6", "X6", "X6" };
+		String[] temp7 = { "???7", "O", "X7", "X7", "X7" };
+		String[] temp8 = { "???8", "O", "X8", "X8", "X8" };
+		String[] temp9 = { "???9", "O", "X9", "X9", "X9" };
+		String[] temp10 = { "???10", "O", "X10", "X10", "X10" };
+		questions.add(temp1);
+		questions.add(temp2);
+		questions.add(temp3);
+		questions.add(temp4);
+		questions.add(temp5);
+		questions.add(temp6);
+		questions.add(temp7);
+		questions.add(temp8);
+		questions.add(temp9);
+		questions.add(temp10);
+
 		Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts
 				+ "");
 
 		// Initializing activity elements
 		questionNumber = (TextView) findViewById(R.id.tv_onep_q_number);
-		score = (TextView) findViewById(R.id.tv_onp_score);
-		heartNumber = (TextView) findViewById(R.id.tv_onep_hearts);
-		question = (TextView) findViewById(R.id.tv_onep_question);
+		_score_layout = (TextView) findViewById(R.id.tv_onp_score);
+		_heart_layout = (TextView) findViewById(R.id.tv_onep_hearts);
+		_question_body = (TextView) findViewById(R.id.tv_onep_question);
 		timer = (ProgressBar) findViewById(R.id.pb_onep_timer);
 
-		choices = new Button[4];
-		choices[0] = (Button) findViewById(R.id.btn_choice1);
-		choices[1] = (Button) findViewById(R.id.btn_choice2);
-		choices[2] = (Button) findViewById(R.id.btn_choice3);
-		choices[3] = (Button) findViewById(R.id.btn_choice4);
-
-		questionNumber.setText(PersianReshape.reshape(questionNum + "/"
-				+ ((questionNum / 10) + 1) * 10));
+		choices = new ArrayList<Button>();
+		choices.add((Button) findViewById(R.id.btn_choice1));
+		choices.add((Button) findViewById(R.id.btn_choice2));
+		choices.add((Button) findViewById(R.id.btn_choice3));
+		choices.add((Button) findViewById(R.id.btn_choice4));
 
 		questionNumber.setTypeface(face);
-		heartNumber.setTypeface(face);
-		score.setTypeface(face);
+		_heart_layout.setTypeface(face);
+		_score_layout.setTypeface(face);
 
-		timer.setMax(time * 10);
-		timer.setProgress(timer.getMax());
-		// runTimer(time);
-
-		setNextQuestion();
+		setQuestion();
 		super.onCreate(savedInstanceState);
 	}
 
-	synchronized public void onChoiceClick(View v) {
-		System.out.println("onChoiceClick invoked");
-		if (!popupIsOn) {
+	/**
+	 * this function sets the next _question_body from the questions ArrayList
+	 */
+	public boolean setQuestion() {
+
+		gameFlag = true;
+
+		_question_counter++;
+
+		_question_body.setText(questions.get(_question_counter)[0]);
+
+		List<Integer> numbers = new ArrayList<Integer>();
+		numbers.add(1);
+		numbers.add(2);
+		numbers.add(3);
+		numbers.add(4);
+		Collections.shuffle(numbers);
+		for (int i = 0; i < numbers.size(); i++) {
+			choices.get(i).setText(
+					questions.get(_question_counter)[numbers.get(i)]);
+			if (numbers.get(i) == 1) {
+				choices.get(i).setTag(1);
+			} else {
+				choices.get(i).setTag(0);
+			}
+		}
+
+		questionNumber.setText(_question_counter + "/10");
+
+		timer.setMax(time_step);
+		timer.setProgress(timer.getMax());
+		runTimer(time);
+		return true;
+	}
+
+	public void setNextQuestion() {
+		if (_question_counter < _PACKAGE_NUM - 1) {
+			coolDownCounter();
+		} else {
+			EndPackFragment endScreen = new EndPackFragment();
+			endScreen.setScore(_total_score);
+			endScreen.setStyle(DialogFragment.STYLE_NO_TITLE,
+					R.style.FullscreenTheme);
+			endScreen.show(getSupportFragmentManager(), "Hi");
+		}
+	}
+
+	private void coolDownCounter() {
+		counter = new CountDownTimer(1000, 10) {
+
+			@Override
+			public void onTick(long milli) {
+			}
+
+			@Override
+			public void onFinish() {
+				gameFlag = true;
+				setQuestion();
+			}
+		};
+		counter.start();
+	}
+
+	public void nextPackage() {
+
+		_question_counter = -1;
+
+		questions = new ArrayList<String[]>();
+		String[] temp1 = { "###1", "O", "G1", "G1", "G1" };
+		String[] temp2 = { "###2", "O", "G2", "G2", "G2" };
+		String[] temp3 = { "###3", "O", "G3", "G3", "G3" };
+		String[] temp4 = { "###4", "O", "G4", "G4", "G4" };
+		String[] temp5 = { "###5", "O", "G5", "G5", "G5" };
+		String[] temp6 = { "###6", "O", "G6", "G6", "G6" };
+		String[] temp7 = { "###7", "O", "G7", "G7", "G7" };
+		String[] temp8 = { "###8", "O", "G8", "G8", "G8" };
+		String[] temp9 = { "###9", "O", "G9", "G9", "G9" };
+		String[] temp10 = { "###10", "O", "G10", "G10", "G10" };
+		questions.add(temp1);
+		questions.add(temp2);
+		questions.add(temp3);
+		questions.add(temp4);
+		questions.add(temp5);
+		questions.add(temp6);
+		questions.add(temp7);
+		questions.add(temp8);
+		questions.add(temp9);
+		questions.add(temp10);
+
+		setQuestion();
+	}
+
+	public void onChoiceClick(View v) {
+		if (gameFlag) {
+			gameFlag = false;
+			counter.cancel();
 			int tag = Integer.parseInt(v.getTag().toString());
-			// counter.cancel();
 			switch (tag) {
 			case 1:
-				// TODO the right answer
 				updateScore(1);
 				updateHearts(0);
 				break;
 
 			case 0:
-				// TODO the wrong answer
 				timer.setProgress(0);
 				updateHearts(-1);
 				break;
@@ -97,54 +205,31 @@ public class GameActivity extends FragmentActivity {
 
 			}
 		}
-		System.out.println("onChoiceClick finished");
 	}
 
 	/**
-	 * this function set the "1" tag to the right choice button and "0" to
-	 * others
-	 * 
-	 * @param rightChoice
-	 *            : the number of the right choice
-	 */
-	synchronized protected void setAnswer(int rightChoice) {
-		System.out.println("setAnswer invoked");
-		choices[0].setTag(0);
-		choices[1].setTag(0);
-		choices[2].setTag(0);
-		choices[3].setTag(0);
-		choices[rightChoice].setTag(1);
-		System.out.println("setAnswer finished");
-	}
-
-	/**
-	 * this function runs a timer for calculating score of user
+	 * this function runs a timer for calculating _score_layout of user
 	 * 
 	 * @param time
-	 *            : the time that should be considered for question time
+	 *            : the time that should be considered for _question_body time
 	 */
-	synchronized public void runTimer(long time) {
-		System.out.println("runTimer invoked");
-		if (!popupIsOn) {
-			currentTime = time;
-			counter = new CountDownTimer(time * 1000, 1) {
+	public void runTimer(long time) {
+		currentTime = time;
+		counter = new CountDownTimer(time * 1000, 10) {
 
-				@Override
-				public void onTick(long milli) {
-					timer.setProgress((int) milli / 100);
-					currentTime = milli;
-				}
+			@Override
+			public void onTick(long milli) {
+				timer.setProgress((int) milli / 100);
+				currentTime = milli;
+			}
 
-				@Override
-				public void onFinish() {
-					// counter.cancel();
-					timer.setProgress(0);
-					updateHearts(-1);
-				}
-			};
-			counter.start();
-		}
-		System.out.println("runTimer finished");
+			@Override
+			public void onFinish() {
+				timer.setProgress(0);
+				updateHearts(-1);
+			}
+		};
+		counter.start();
 	}
 
 	/**
@@ -154,141 +239,50 @@ public class GameActivity extends FragmentActivity {
 	 *            : the change that should be applied to user hearts number
 	 * @return true if resuming game is available for user and false otherwise
 	 */
-	synchronized public void updateHearts(int change) {
-		System.out.println("updateHearts invoked");
-		if (!popupIsOn) {
-			hearts = hearts + change;
-			heartNumber.setText(hearts + "");
-			showState();
-			if (hearts < 1) {
-				stopGame();
-				System.out.println("IF");
-				showEndDialog();
-			} else {
-				System.out.println("ELSE");
-				setNextQuestion();
-			}
+	public void updateHearts(int change) {
+		hearts += change;
+		_heart_layout.setText(hearts + "");
+		if (hearts < 1) {
+			stopGame();
+		} else {
+			setNextQuestion();
 		}
-		System.out.println("updateHearts finished");
 	}
 
 	/**
-	 * this function updates user score
+	 * this function updates user _score_layout
 	 * 
 	 * @param change
-	 *            : the change that should be applied to the score of user
+	 *            : the change that should be applied to the _score_layout of
+	 *            user
 	 */
-	synchronized public void updateScore(int change) {
-		System.out.println("updateScore invoked");
-		if (!popupIsOn) {
-			int currentScore = Integer.parseInt(score.getText().toString());
-			currentScore = currentScore + change;
-			score.setText(currentScore + "");
-			lastScore = currentScore;
-		}
-		System.out.println("updateScore finished");
-	}
-
-	/**
-	 * this method sets the question and choices
-	 * 
-	 * @param qAndAs
-	 *            : the array of string which contains the question and the
-	 *            choices.the question should be in the first index. the correct
-	 *            answer should be in the second index of array. the choices
-	 *            will be set at random.
-	 */
-	synchronized public void setQuestion(String[] qAndAs) {
-		System.out.println("setQuestion invoked");
-		if (!popupIsOn) {
-			question.setText(qAndAs[0]);
-
-			List<Integer> numbers = new ArrayList<Integer>();
-			numbers.add(1);
-			numbers.add(2);
-			numbers.add(3);
-			numbers.add(4);
-			Collections.shuffle(numbers);
-			for (int i = 0; i < numbers.size(); i++) {
-				choices[i].setText(qAndAs[numbers.get(i)]);
-				if (numbers.get(i) == 1) {
-					setAnswer(i);
-				}
-			}
-		}
-		System.out.println("setQuestion finished");
-	}
-
-	/**
-	 * this function sets the next question from the questions ArrayList
-	 */
-	synchronized public boolean setNextQuestion() {
-		System.out.println("setNextQuestion invoked");
-		if (!popupIsOn) {
-			if (questions.isEmpty()) {
-				// TODO read new questions
-				String[] temp = { "???", "O", "X", "X", "X" };
-				questions.add(temp);
-			}
-			if (counter != null) {
-				System.out.println(">>>>>>>>>>>>>>>>>");
-				System.out.println(counter);
-				counter.cancel();
-				counter = null;
-				System.out.println(counter);
-				System.out.println("<<<<<<<<<<<<<<<<<");
-			}
-			setQuestion(questions.get(0));
-			questions.remove(0);
-			questionNum++;
-			questionNumber.setText(questionNum + "/" + ((questionNum / 10) + 1)
-					* 10);
-			if (questionNum % 10 == 0) {
-				updateHearts(1);
-				time = Math.max(--time, minimumTime);
-			}
-			timer.setMax(time * 10);
-			timer.setProgress(timer.getMax());
-			runTimer(time);
-			return true;
-		}
-		System.out.println("setNextQuestion finished");
-		return false;
+	public void updateScore(int change) {
+		_total_score += change;
+		_score_layout.setText(String.valueOf(_total_score));
 	}
 
 	/**
 	 * this method shows end game dialog to user
 	 */
-	synchronized protected void showEndDialog() {
-		// TODO
-		System.out.println("showEndDialog invoked");
-		stopGame();
-		popupIsOn = true;
+	protected void showEndDialog() {
+		gameFlag = false;
 		EndGameFragment endScreen = new EndGameFragment();
-		endScreen.setScore(lastScore);
+		endScreen.setScore(_total_score);
 		endScreen.setStyle(DialogFragment.STYLE_NO_TITLE,
 				R.style.FullscreenTheme);
 		endScreen.show(getSupportFragmentManager(), "Hi");
-		System.out.println("showEndDialog finished");
 	}
 
 	public void countinueGame() {
-		// TODO Auto-generated method stub
-		hearts = 1;
-		popupIsOn = false;
-		updateHearts(0);
+		gameFlag = true;
+		updateHearts(1);
 	}
 
 	public void stopGame() {
-		// counter.cancel();
+		showEndDialog();
 	}
 
 	public void stopGame(View v) {
 		// counter.cancel();
-	}
-
-	public void showState() {
-		System.out.println("SCORE:" + score + ",HEARTS:" + hearts + ",QNUM:"
-				+ questionNum);
 	}
 }

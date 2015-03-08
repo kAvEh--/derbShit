@@ -129,42 +129,46 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a001a;
-        public static final int btn_choice1=0x7f0a0016;
-        public static final int btn_choice2=0x7f0a0017;
-        public static final int btn_choice3=0x7f0a0018;
-        public static final int btn_choice4=0x7f0a0019;
-        public static final int btn_onep_buyHeart=0x7f0a000a;
-        public static final int btn_onep_leader=0x7f0a000e;
-        public static final int btn_onep_main_menu=0x7f0a000c;
-        public static final int btn_onep_share_record=0x7f0a000b;
-        public static final int btn_onep_stat=0x7f0a000f;
-        public static final int imageView1=0x7f0a0012;
-        public static final int lbl_main=0x7f0a0003;
-        public static final int leader_name=0x7f0a0007;
-        public static final int leader_rank=0x7f0a0008;
-        public static final int leader_score=0x7f0a0006;
-        public static final int leaders_list=0x7f0a0002;
-        public static final int one_player_button=0x7f0a0004;
-        public static final int one_player_start=0x7f0a000d;
+        public static final int action_settings=0x7f0a001d;
+        public static final int btn_choice1=0x7f0a0019;
+        public static final int btn_choice2=0x7f0a001a;
+        public static final int btn_choice3=0x7f0a001b;
+        public static final int btn_choice4=0x7f0a001c;
+        public static final int btn_onep_buyHeart=0x7f0a000d;
+        public static final int btn_onep_leader=0x7f0a0011;
+        public static final int btn_onep_main_menu=0x7f0a000f;
+        public static final int btn_onep_share_record=0x7f0a000e;
+        public static final int btn_onep_stat=0x7f0a0012;
+        public static final int fragment_endpack_continue=0x7f0a0004;
+        public static final int fragment_endpack_score=0x7f0a0003;
+        public static final int fragment_endpack_title=0x7f0a0002;
+        public static final int imageView1=0x7f0a0015;
+        public static final int lbl_main=0x7f0a0006;
+        public static final int leader_name=0x7f0a000a;
+        public static final int leader_rank=0x7f0a000b;
+        public static final int leader_score=0x7f0a0009;
+        public static final int leaders_list=0x7f0a0005;
+        public static final int one_player_button=0x7f0a0007;
+        public static final int one_player_start=0x7f0a0010;
         public static final int onep_leader_pager=0x7f0a0001;
         public static final int onep_leader_tabs=0x7f0a0000;
-        public static final int pb_onep_timer=0x7f0a0014;
-        public static final int tv_onep_end_score=0x7f0a0009;
-        public static final int tv_onep_hearts=0x7f0a0013;
-        public static final int tv_onep_q_number=0x7f0a0010;
-        public static final int tv_onep_question=0x7f0a0015;
-        public static final int tv_onp_score=0x7f0a0011;
-        public static final int two_player_button=0x7f0a0005;
+        public static final int pb_onep_timer=0x7f0a0017;
+        public static final int tv_onep_end_score=0x7f0a000c;
+        public static final int tv_onep_hearts=0x7f0a0016;
+        public static final int tv_onep_q_number=0x7f0a0013;
+        public static final int tv_onep_question=0x7f0a0018;
+        public static final int tv_onp_score=0x7f0a0014;
+        public static final int two_player_button=0x7f0a0008;
     }
     public static final class layout {
         public static final int activity_opleader_board=0x7f030000;
-        public static final int fragment_leaders=0x7f030001;
-        public static final int home=0x7f030002;
-        public static final int leader_board_row=0x7f030003;
-        public static final int one_player_end=0x7f030004;
-        public static final int one_player_main=0x7f030005;
-        public static final int one_player_question=0x7f030006;
+        public static final int fragment_end_pack=0x7f030001;
+        public static final int fragment_leaders=0x7f030002;
+        public static final int home=0x7f030003;
+        public static final int leader_board_row=0x7f030004;
+        public static final int one_player_end=0x7f030005;
+        public static final int one_player_main=0x7f030006;
+        public static final int one_player_question=0x7f030007;
     }
     public static final class menu {
         public static final int opleader_board=0x7f090000;
@@ -181,11 +185,13 @@ containing a value of this type.
 
 
 
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
 
 
 
