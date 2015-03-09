@@ -6,9 +6,9 @@ import ir.eynakgroup.derbi.util.Player;
 import ir.eynakgroup.derbi.util.Question;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 import android.app.Activity;
 
@@ -16,6 +16,7 @@ public class QuestionGenerator {
 
 	Activity activity;
 	ArrayList<Player> players;
+	int team;
 
 	/**
 	 * 
@@ -26,22 +27,23 @@ public class QuestionGenerator {
 		this.activity = activity;
 		DatabaseHandler db = new DatabaseHandler(activity);
 		// TODO players = db.getTeamPlayers(db.getTeam());
-		players = db.getTeamPlayers(1);
+		team = 1;
+		players = db.getTeamPlayers(team);
 		System.out.println("----------------------");
-		System.out.println(getNationalGoalQ(1));
-		System.out.println(getNationalGoalQ(-1));
-		System.out.println(getNationalMatchQ(1));
-		System.out.println(getNationalMatchQ(-1));
-		System.out.println(getMatchQ(1, 1));
-		System.out.println(getMatchQ(-1, 1));
-		System.out.println(getGoalQ(1, 1));
-		System.out.println(getGoalQ(-1, 1));
-		System.out.println(getEntranceQ(1, 1));
-		System.out.println(getEntranceQ(-1, 1));
-		System.out.println(getHeightQ(1));
-		System.out.println(getHeightQ(-1));
-		System.out.println(getAgeQ(1, 1));
-		System.out.println(getAgeQ(-1, 1));
+		// System.out.println(getNationalGoalQ(1));
+		// System.out.println(getNationalGoalQ(-1));
+		// System.out.println(getNationalMatchQ(1));
+		// System.out.println(getNationalMatchQ(-1));
+		// System.out.println(getMatchQ(1, 1));
+		// System.out.println(getMatchQ(-1, 1));
+		// System.out.println(getGoalQ(1, 1));
+		// System.out.println(getGoalQ(-1, 1));
+		// System.out.println(getEntranceQ(1, 1));
+		// System.out.println(getEntranceQ(-1, 1));
+		// System.out.println(getHeightQ(1));
+		// System.out.println(getHeightQ(-1));
+		// System.out.println(getAgeQ(1, 1));
+		// System.out.println(getAgeQ(-1, 1));
 
 		db.close();
 	}
@@ -56,9 +58,31 @@ public class QuestionGenerator {
 	 */
 	public ArrayList<String[]> getQuestions(int level) {
 		ArrayList<String[]> temp = new ArrayList<String[]>();
-		temp.add(getPositionQ(0));
-		temp.add(getPositionQ(1));
-		temp.add(getPositionQ(2));
+		return temp;
+	}
+
+	public ArrayList<Question> getQuestionsObjects(int level) {
+		ArrayList<Question> temp = new ArrayList<Question>();
+		Random r = new Random();
+		while (temp.size() < 11) {
+			int c = r.nextInt(99) + 1;
+			if (c > 0 && c < 12)
+				temp.add(getAgeQ(r.nextInt(10) - 5, team));
+			else if (c > 11 && c < 23)
+				temp.add(getEntranceQ(r.nextInt(10) - 5, team));
+			else if (c > 22 && c < 34)
+				temp.add(getGoalQ(r.nextInt(10) - 5, team));
+			else if (c > 33 && c < 45)
+				temp.add(getHeightQ(r.nextInt(10) - 5));
+			else if (c > 44 && c < 56)
+				temp.add(getMatchQ(r.nextInt(10) - 5, team));
+			else if (c > 55 && c < 67)
+				temp.add(getNationalGoalQ(r.nextInt(10) - 5));
+			else if (c > 66 && c < 78)
+				temp.add(getNationalMatchQ(r.nextInt(10) - 5));
+			else if (c > 77 && c < 80)
+				temp.add(getPositionQ(r.nextInt(10) - 5));
+		}
 		return temp;
 	}
 
@@ -531,7 +555,7 @@ public class QuestionGenerator {
 	 *            : it shows that whether the answer has a unique position (1)
 	 *            or the position of the the player is the answer (0)
 	 */
-	private String[] getPositionQ(int indicator) {
+	private Question getPositionQ(int indicator) {
 		int random = (int) Math.ceil(Math.random() * 4);
 		String[] positions = activity.getResources().getStringArray(
 				R.array.positions);
@@ -543,7 +567,7 @@ public class QuestionGenerator {
 			String[] qandA = { question, positions[random - 1],
 					positions[(random) % 4], positions[(random + 1) % 4],
 					positions[(random + 2) % 4] };
-			return qandA;
+			return new Question(qandA);
 		} else if (indicator == 1) {
 			String question = " کدام بازیکن " + positions[random - 1]
 					+ " است؟ ";
@@ -555,7 +579,7 @@ public class QuestionGenerator {
 			String[] qandA = { question, player, falseChoices.get(0),
 					falseChoices.get(1), falseChoices.get(2) };
 
-			return qandA;
+			return new Question(qandA);
 		} else if (indicator == 2) {
 			String question = "کدام بازیکن " + positions[random - 1] + " نیست؟";
 			DatabaseHandler db = new DatabaseHandler(activity);
@@ -566,7 +590,7 @@ public class QuestionGenerator {
 			String[] qandA = { question, player, falseChoices.get(0),
 					falseChoices.get(1), falseChoices.get(2) };
 
-			return qandA;
+			return new Question(qandA);
 		} else {
 			return null;
 		}
