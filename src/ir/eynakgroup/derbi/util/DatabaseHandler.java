@@ -34,7 +34,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	private static final String KEY_PLAYER_HEIGHT = "height";
 	private static final String KEY_PLAYER_GOAL_COUNT = "goal_count";
 	private static final String KEY_PLAYER_MATCH_COUNT = "match_count";
-	private static final String KEY_PLAYER_ENTERANCE_YEAR = "enterance_year";
+	private static final String KEY_PLAYER_ENTERANCE_YEAR = "entrance_year";
 	private static final String KEY_PLAYER_POSITION = "position";
 	private static final String KEY_PLAYER_NAME = "name";
 	private static final String KEY_PLAYER_TEAM = "team";
@@ -160,8 +160,9 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	public String getRandomPlayerByPosition(int position) {
 		String query = "SELECT " + KEY_PLAYER_NAME + " FROM " + TABLE_PLAYERS
 				+ " WHERE " + KEY_PLAYER_POSITION + " = " + position + " AND "
-				+ KEY_PLAYER_TEAM + " = " + getTeam()
+				+ KEY_PLAYER_TEAM + " = " + 1 // TODO getTeam()
 				+ " ORDER BY RANDOM() LIMIT 1";
+
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
 		if (c.getCount() != 0) {
@@ -186,7 +187,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	public String getRandomPlayerByPositionN(int position) {
 		String query = "SELECT " + KEY_PLAYER_NAME + " FROM " + TABLE_PLAYERS
 				+ " WHERE " + KEY_PLAYER_POSITION + " != " + position + " AND "
-				+ KEY_PLAYER_TEAM + " = " + getTeam()
+				+ KEY_PLAYER_TEAM + " = " + 1 // TODO getTeam()
 				+ " ORDER BY RANDOM() LIMIT 1";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
@@ -212,7 +213,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	public ArrayList<String> getRandomPlayersByPosition(int position) {
 		String query = "SELECT " + KEY_PLAYER_NAME + " FROM " + TABLE_PLAYERS
 				+ " WHERE " + KEY_PLAYER_POSITION + " = " + position + " AND "
-				+ KEY_PLAYER_TEAM + " = " + getTeam()
+				+ KEY_PLAYER_TEAM + " = " + 1 // TODO getTeam()
 				+ " ORDER BY RANDOM() LIMIT 3";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
@@ -241,7 +242,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	public ArrayList<String> getRandomPlayersByPositionN(int position) {
 		String query = "SELECT " + KEY_PLAYER_NAME + " FROM " + TABLE_PLAYERS
 				+ " WHERE " + KEY_PLAYER_POSITION + " != " + position + " AND "
-				+ KEY_PLAYER_TEAM + " = " + getTeam()
+				+ KEY_PLAYER_TEAM + " = " + 1 // TODO getTeam()
 				+ " ORDER BY RANDOM() LIMIT 3";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
@@ -265,6 +266,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 		ArrayList<Player> temp = new ArrayList<Player>();
 		String str = "SELECT * FROM " + TABLE_PLAYERS + " WHERE "
 				+ KEY_PLAYER_TEAM + " = " + team;
+		System.out.println(str);
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(str, null);
 		if (c.getCount() != 0) {

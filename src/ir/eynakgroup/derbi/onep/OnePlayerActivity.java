@@ -17,7 +17,9 @@ public class OnePlayerActivity extends Activity {
 		setContentView(R.layout.one_player_main);
 		newGame = (Button) findViewById(R.id.one_player_start);
 		leaderBoard = (Button) findViewById(R.id.btn_onep_leader);
-
+		
+		QuestionGenerator qg = new QuestionGenerator(this);
+		System.out.println(qg.getQuestions(1));
 		newGame.setOnClickListener(new OnClickListener() {
 
 			@Override
