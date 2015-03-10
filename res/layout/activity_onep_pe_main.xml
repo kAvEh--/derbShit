@@ -57,9 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="حمید رفیعیان پرچم پرسپولیس رو بالا برده."
             android:textColor="@color/white"
-            android:textSize="27sp" />
+            android:textSize="22sp" />
 
         <RelativeLayout
             android:id="@+id/onep_footer"

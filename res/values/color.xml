@@ -2,5 +2,7 @@
 <resources>
     <color name="black_main">#252525</color>
     <color name="white">#FFFFFF</color>
+    <color name="esteghlal_blue">#295D7D</color>
+    <color name="perspolis_red">#D90F14</color>
     
 </resources>
