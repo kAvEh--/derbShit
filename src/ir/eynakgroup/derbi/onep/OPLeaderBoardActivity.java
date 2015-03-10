@@ -1,5 +1,6 @@
 package ir.eynakgroup.derbi.onep;
 
+import ir.eynakgroup.derbi.R;
 import ir.eynakgroup.derbi.util.AppController;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,7 +26,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 public class OPLeaderBoardActivity extends FragmentActivity {
-	private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
 	private MyPagerAdapter adapter;
 
@@ -34,7 +33,6 @@ public class OPLeaderBoardActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_opleader_board);
-		tabs = (PagerSlidingTabStrip) findViewById(R.id.onep_leader_tabs);
 		pager = (ViewPager) findViewById(R.id.onep_leader_pager);
 
 		adapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -139,7 +137,6 @@ public class OPLeaderBoardActivity extends FragmentActivity {
 		adapter.setData(0, data.get(0));
 		adapter.setData(1, data.get(1));
 		adapter.setData(2, data.get(2));
-		tabs.setViewPager(pager);
 		pager.setAdapter(adapter);
 	}
 

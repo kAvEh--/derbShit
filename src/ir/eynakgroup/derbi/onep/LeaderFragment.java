@@ -1,8 +1,9 @@
 package ir.eynakgroup.derbi.onep;
 
+import ir.eynakgroup.derbi.R;
+
 import java.util.ArrayList;
 
-import android.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

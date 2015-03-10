@@ -1,10 +1,10 @@
 package ir.eynakgroup.derbi.onep;
 
+import ir.eynakgroup.derbi.R;
 import ir.eynakgroup.derbi.util.PersianReshape;
 
 import java.util.ArrayList;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
