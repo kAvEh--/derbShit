@@ -29,7 +29,7 @@ public class QuestionGenerator {
 		// TODO players = db.getTeamPlayers(db.getTeam());
 		team = 1;
 		players = db.getTeamPlayers(team);
-		System.out.println("----dfghj-hgfgfh-nhbfvjv-ujh----fdg-------dfghjk---");
+		System.out.println("----dfghj-hgfgfh-nhbfvjv-udjh----fdg-------dfghjk---");
 
 		db.close();
 	}
