@@ -2,6 +2,7 @@ package ir.eynakgroup.derbi.onep;
 
 import ir.eynakgroup.derbi.R;
 import ir.eynakgroup.derbi.util.DatabaseHandler;
+import ir.eynakgroup.derbi.util.League;
 import ir.eynakgroup.derbi.util.Player;
 import ir.eynakgroup.derbi.util.Question;
 
@@ -16,7 +17,11 @@ public class QuestionGenerator {
 
 	Activity activity;
 	ArrayList<Player> players;
+	ArrayList<League> leagueData;
 	int team;
+	String[] posesStr = { "صفرم", "اول", "دوم", "سوم", "چهارم", "پنجم", "ششم",
+			"هفتم", "هشتم", "نهم", "دهم", "یازدهم", "دوازدهم", "سیزدهم",
+			"چهاردهم", "پانزدهم", "شانزدهم", "هفدهم", "هیجدهم" };
 
 	/**
 	 * 
@@ -29,8 +34,7 @@ public class QuestionGenerator {
 		// TODO players = db.getTeamPlayers(db.getTeam());
 		team = 1;
 		players = db.getTeamPlayers(team);
-		System.out.println("----dfghj-hgfgfh-nhbfvjv-udjh----fdg-------dfghjk---");
-
+		leagueData = db.getTeamLeague(team);
 		db.close();
 	}
 
@@ -47,9 +51,18 @@ public class QuestionGenerator {
 		return temp;
 	}
 
+	/**
+	 * 
+	 * @param level
+	 *            : the level of questions that must be generated
+	 * @return an ArrayList of Question objects
+	 */
 	public ArrayList<Question> getQuestionsObjects(int level) {
 		ArrayList<Question> temp = new ArrayList<Question>();
 		Random r = new Random();
+		temp.add(getLeaguePointsQ(1));
+		temp.add(getLeaguePositionQ(1));
+		temp.add(getCaptainQ());
 		while (temp.size() < 10) {
 			int c = r.nextInt(99) + 1;
 			if (c > 0 && c < 12)
@@ -60,14 +73,20 @@ public class QuestionGenerator {
 				temp.add(getGoalQ(r.nextInt(10) - 5, team));
 			else if (c > 33 && c < 45)
 				temp.add(getHeightQ(r.nextInt(10) - 5));
-			else if (c > 44 && c < 56)
+			else if (c > 44 && c < 52)
 				temp.add(getMatchQ(r.nextInt(10) - 5, team));
-			else if (c > 55 && c < 67)
+			else if (c > 51 && c < 65)
 				temp.add(getNationalGoalQ(r.nextInt(10) - 5));
-			else if (c > 66 && c < 78)
+			else if (c > 64 && c < 78)
 				temp.add(getNationalMatchQ(r.nextInt(10) - 5));
-			else if (c > 77 && c < 80)
+			else if (c > 77 && c < 82)
 				temp.add(getPositionQ(r.nextInt(10) - 5));
+			else if (c > 81 && c < 86)
+				temp.add(getLeaguePointsQ(r.nextInt(10) - 5));
+			else if (c > 85 && c < 90)
+				temp.add(getLeaguePositionQ(r.nextInt(10) - 5));
+			else if (c > 89 && c < 92)
+				temp.add(getCaptainQ());
 		}
 		return temp;
 	}
@@ -92,7 +111,7 @@ public class QuestionGenerator {
 				if (players.get(i).getNationalGoals() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getNationalGoals() > players.get(i)
@@ -102,11 +121,15 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن گل ملی بیشتری زده است؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getNationalGoals() < 0)
@@ -123,17 +146,21 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن گل ملی کمتری زده است؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 	}
 
-	private int getRandom(int nulls, int size) {
+	private int getRandom(int start, int end) {
 		double f = Math.random();
-		f = f * (size - nulls) + nulls;
+		f = f * (end - start) + start;
 		return (int) Math.ceil(f);
 	}
 
@@ -158,7 +185,7 @@ public class QuestionGenerator {
 				if (players.get(i).getNationalMatch() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getNationalMatch() > players.get(i)
@@ -168,11 +195,15 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن بازی ملی بیشتری دارد؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getNationalMatch() < 0)
@@ -189,11 +220,15 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن بازی ملی کمتری دارد؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 	}
 
@@ -205,11 +240,19 @@ public class QuestionGenerator {
 	 *            bigger and 0 means smaller
 	 */
 	private Question getAgeQ(int dir, int team) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getBirthDate().length() < 5)
+				players.remove(i);
+		}
 		Collections.sort(players, new Comparator<Player>() {
 			@Override
 			public int compare(Player lhs, Player rhs) {
 				String[] lage = lhs.getBirthDate().split("-");
 				String[] rage = rhs.getBirthDate().split("-");
+				if (rage.length < 2)
+					return 1;
+				if (lage.length < 2)
+					return -1;
 				if (Integer.parseInt(lage[0]) != Integer.parseInt(rage[0]))
 					return Integer.parseInt(lage[0])
 							- Integer.parseInt(rage[0]);
@@ -227,40 +270,50 @@ public class QuestionGenerator {
 				if (players.get(i).getBirthDate().length() != 10)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
-				if (players.get(pivot).getAge() > players.get(i).getAge())
+				if (players.get(pivot).getBirthInt() > players.get(i)
+						.getBirthInt())
 					temp.add(i);
 			}
 			Collections.shuffle(temp);
 			String question = "کدام بازیکن جوان‌تر است؟";
 			String player = players.get(pivot).getName();
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getBirthDate().length() != 10)
 					nulls++;
 			}
-			int pivot = getRandom(nulls, players.size()-6);
+			int pivot = getRandom(nulls, players.size() - 6);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = pivot; i < players.size(); i++) {
-				if (players.get(pivot).getAge() < players.get(i).getAge())
+				if (players.get(pivot).getBirthInt() < players.get(i)
+						.getBirthInt())
 					temp.add(i);
 			}
 
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن پیرتر است؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 
 	}
@@ -286,7 +339,7 @@ public class QuestionGenerator {
 				if (players.get(i).getHeight() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getHeight() > players.get(i).getHeight())
@@ -295,11 +348,15 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن قد بلندتری دارد؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getHeight() < 0)
@@ -315,11 +372,15 @@ public class QuestionGenerator {
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "کدام بازیکن قد کوتاه‌تری دارد؟";
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 
 	}
@@ -345,7 +406,7 @@ public class QuestionGenerator {
 				if (players.get(i).getGoalCount() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getGoalCount() > players.get(i)
@@ -360,11 +421,15 @@ public class QuestionGenerator {
 			else if (team == 1)
 				question = "کدام بازیکن گل بیشتری برای پرسپولیس زده است؟";
 
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getGoalCount() < 0)
@@ -386,11 +451,15 @@ public class QuestionGenerator {
 			else if (team == 1)
 				question = "کدام بازیکن گل کمتری برای پرسپولیس زده است؟";
 
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 	}
 
@@ -415,7 +484,7 @@ public class QuestionGenerator {
 				if (players.get(i).getMatchCount() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getMatchCount() > players.get(i)
@@ -430,11 +499,15 @@ public class QuestionGenerator {
 			else if (team == 1)
 				question = "کدام بازیکن گل بیشتری برای پرسپولیس زده است؟";
 
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getMatchCount() < 0)
@@ -456,11 +529,15 @@ public class QuestionGenerator {
 			else if (team == 1)
 				question = "کدام بازیکن گل کمتری برای پرسپولیس زده است؟";
 
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 	}
 
@@ -478,16 +555,15 @@ public class QuestionGenerator {
 				return lhs.getEntranceYear() - rhs.getEntranceYear();
 			}
 		});
-
 		int nulls = 0;
 		if (dir > 0) {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getEntranceYear() < 1)
 					nulls++;
 			}
-			int pivot = getRandom(nulls + 8, players.size());
+			int pivot = getRandom(nulls + 8, players.size() - 1);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
-			for (int i = nulls; i < pivot; i++) {
+			for (int i = pivot; i < players.size(); i++) {
 				if (players.get(pivot).getEntranceYear() < players.get(i)
 						.getEntranceYear())
 					temp.add(i);
@@ -500,24 +576,27 @@ public class QuestionGenerator {
 			else if (team == 1)
 				question = "کدام بازیکن زودتر به پرسپولیس پیوسته است؟";
 
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		} else {
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getEntranceYear() < 0)
 					nulls++;
 			}
-			int pivot = getRandom(nulls, players.size() - 8);
+			int pivot = getRandom(nulls, players.size() - 4);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
-			for (int i = pivot; i < players.size(); i++) {
+			for (int i = nulls; i < pivot; i++) {
 				if (players.get(pivot).getEntranceYear() > players.get(i)
 						.getEntranceYear())
 					temp.add(i);
 			}
-
 			Collections.shuffle(temp);
 			String player = players.get(pivot).getName();
 			String question = "";
@@ -525,12 +604,20 @@ public class QuestionGenerator {
 				question = "کدام بازیکن دیرتر به استقلال پیوسته است؟";
 			else if (team == 1)
 				question = "کدام بازیکن دیرتر به پرسپولیس پیوسته است؟";
-
-			String[] falses = { players.get(temp.get(0)).getName(),
-					players.get(temp.get(1)).getName(),
-					players.get(temp.get(2)).getName() };
-			Question q = new Question(question, player, falses);
-			return q;
+			// System.out.println("Pivot" + pivot);
+			// System.out.println("nulls" + nulls);
+			// System.out.println("temp" + temp);
+			// System.out.println("players" + players);
+			// System.out.println("size" + players.size());
+			if (temp.size() < 3) {
+				return getEntranceQ(dir, team);
+			} else {
+				String[] falses = { players.get(temp.get(0)).getName(),
+						players.get(temp.get(1)).getName(),
+						players.get(temp.get(2)).getName() };
+				Question q = new Question(question, player, falses);
+				return q;
+			}
 		}
 	}
 
@@ -549,7 +636,7 @@ public class QuestionGenerator {
 			DatabaseHandler db = new DatabaseHandler(activity);
 			String player = db.getRandomPlayerByPosition(random);
 			db.close();
-			String question = " پست " + player + "چیست؟ ";
+			String question = " پست " + player + " چیست؟ ";
 			String[] qandA = { question, positions[random - 1],
 					positions[(random) % 4], positions[(random + 1) % 4],
 					positions[(random + 2) % 4] };
@@ -578,7 +665,139 @@ public class QuestionGenerator {
 
 			return new Question(qandA);
 		} else {
-			return null;
+			return getPositionQ(1);
 		}
 	}
+
+	/**
+	 * this method returns the league position of team question
+	 * 
+	 * @param team
+	 * @return
+	 */
+	private Question getLeaguePositionQ(int team) {
+		int pivot = getRandom(0, leagueData.size() - 1);
+		League league = leagueData.get(pivot);
+		ArrayList<Integer> positions = new ArrayList<Integer>();
+		for (int i = 1; i < 16; i++)
+			positions.add(i);
+		Collections.shuffle(positions);
+		if (team == 1) {
+			String question = " پرسپولیس در فصل " + league.getSeason()
+					+ " چه مقامی به دست آورد؟ ";
+			int answer = league.getPosition();
+			ArrayList<Integer> falseAs = new ArrayList<Integer>();
+			for (int i = 0; i < positions.size(); i++) {
+				if (falseAs.size() > 2)
+					break;
+				if (positions.get(i) != answer) {
+					falseAs.add(positions.get(i));
+				}
+			}
+
+			String[] falses = { posesStr[falseAs.get(0)],
+					posesStr[falseAs.get(1)], posesStr[falseAs.get(2)] };
+			return new Question(question, posesStr[answer], falses);
+		} else if (team == 2) {
+			String question = " استقلال در فصل " + league.getSeason()
+					+ " چه مقامی به دست آورد؟ ";
+			int answer = league.getPosition();
+			ArrayList<Integer> falseAs = new ArrayList<Integer>();
+			for (int i = 0; i < positions.size(); i++) {
+				if (falseAs.size() > 2)
+					break;
+				if (positions.get(i) != answer) {
+					falseAs.add(positions.get(i));
+				}
+			}
+
+			String[] falses = { posesStr[falseAs.get(0)],
+					posesStr[falseAs.get(1)], posesStr[falseAs.get(2)] };
+			return new Question(question, posesStr[answer], falses);
+
+		} else
+			return null;
+	}
+
+	/**
+	 * this method returns the league points of team question
+	 * 
+	 * @param team
+	 * @return
+	 */
+	private Question getLeaguePointsQ(int team) {
+		int pivot = getRandom(0, leagueData.size() - 1);
+		League league = leagueData.get(pivot);
+		ArrayList<Integer> points = new ArrayList<Integer>();
+		for (int i = 26; i < 77; i++)
+			points.add(i);
+		Collections.shuffle(points);
+		if (team == 1) {
+			String question = " پرسپولیس در فصل " + league.getSeason()
+					+ " چند امتیاز کسب کرد؟ ";
+			int answer = league.getPoints();
+			ArrayList<Integer> falseAs = new ArrayList<Integer>();
+			for (int i = 0; i < points.size(); i++) {
+				if (falseAs.size() > 2)
+					break;
+				if (points.get(i) != answer) {
+					falseAs.add(points.get(i));
+				}
+			}
+
+			String[] falses = { "" + falseAs.get(0), "" + falseAs.get(1),
+					falseAs.get(2) + "" };
+			return new Question(question, answer + "", falses);
+		} else if (team == 2) {
+			String question = "استقلال در فصل " + league.getSeason()
+					+ " چند امتیاز کسب کرد؟ ";
+			int answer = league.getPoints();
+			ArrayList<Integer> falseAs = new ArrayList<Integer>();
+			for (int i = 0; i < points.size(); i++) {
+				if (falseAs.size() > 2)
+					break;
+				if (points.get(i) != answer) {
+					falseAs.add(points.get(i));
+				}
+			}
+
+			String[] falses = { "" + falseAs.get(0), "" + falseAs.get(1),
+					falseAs.get(2) + "" };
+			return new Question(question, "" + answer, falses);
+
+		} else
+			return null;
+
+	}
+
+	/**
+	 * this method returns captain question
+	 * 
+	 * @return
+	 */
+	private Question getCaptainQ() {
+		String question = "کدام بازیکن کاپیتان اول باشگاه بوده است؟";
+		Collections.shuffle(players);
+		String answer = "";
+		String[] falses = new String[3];
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getCaptain() == 1) {
+				answer = players.get(i).getName();
+				break;
+			}
+		}
+		ArrayList<String> temp = new ArrayList<String>();
+		for (int i = 0; i < players.size(); i++) {
+			if (temp.size() > 2)
+				break;
+			if (players.get(i).getCaptain() == 0) {
+				temp.add(players.get(i).getName());
+			}
+		}
+		falses[0] = temp.get(0);
+		falses[1] = temp.get(1);
+		falses[2] = temp.get(2);
+		return new Question(question, answer, falses);
+	}
+
 }

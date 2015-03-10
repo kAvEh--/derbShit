@@ -19,6 +19,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	// tables name
 	private static final String TABLE_USER_INFO = "userInfo";
 	private static final String TABLE_PLAYERS = "players";
+	private static final String TABLE_LEAGUE = "league";
 
 	// user Info columns
 	private static final String KEY_USER_NAME = "name";
@@ -38,6 +39,13 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 	private static final String KEY_PLAYER_POSITION = "position";
 	private static final String KEY_PLAYER_NAME = "name";
 	private static final String KEY_PLAYER_TEAM = "team";
+	private static final String KEY_PLAYER_CAPTAIN = "captain";
+
+	// league columns
+	private static final String KEY_LEAGUE_SEASON = "season";
+	private static final String KEY_LEAGUE_TEAM = "team";
+	private static final String KEY_LEAGUE_POSITION = "position";
+	private static final String KEY_LEAGUE_POINTS = "points";
 
 	// constructor
 	public DatabaseHandler(Context context) {
@@ -57,8 +65,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 		String query = "SELECT " + KEY_USER_TEAM + " FROM " + TABLE_USER_INFO;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		if (c.getCount() != 0) {
-			c.moveToFirst();
+		if (c.moveToFirst()) {
 			int coins = c.getInt(c.getColumnIndex(KEY_USER_TEAM));
 			c.close();
 			db.close();
@@ -79,8 +86,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 		String query = "SELECT " + KEY_USER_COINS + " FROM " + TABLE_USER_INFO;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		if (c.getCount() != 0) {
-			c.moveToFirst();
+		if (c.moveToFirst()) {
 			int coins = c.getInt(c.getColumnIndex(KEY_USER_COINS));
 			c.close();
 			db.close();
@@ -165,8 +171,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		if (c.getCount() != 0) {
-			c.moveToFirst();
+		if (c.moveToFirst()) {
 			String playerName = c.getString(c.getColumnIndex(KEY_PLAYER_NAME));
 			c.close();
 			db.close();
@@ -191,8 +196,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 				+ " ORDER BY RANDOM() LIMIT 1";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(query, null);
-		if (c.getCount() != 0) {
-			c.moveToFirst();
+		if (c.moveToFirst()) {
 			String playerName = c.getString(c.getColumnIndex(KEY_PLAYER_NAME));
 			c.close();
 			db.close();
@@ -289,9 +293,42 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 				int nationalGoal = c.getInt(c
 						.getColumnIndex(KEY_PLAYER_NATIONAL_GOALS));
 				int height = c.getInt(c.getColumnIndex(KEY_PLAYER_HEIGHT));
+				int captain = c.getInt(c.getColumnIndex(KEY_PLAYER_CAPTAIN));
 				temp.add(new Player(name, birthDate, team, position,
 						entranceYear, matchCount, goalCount, height,
-						nationalMatch, nationalGoal, birthPlace));
+						nationalMatch, nationalGoal, birthPlace, captain));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return temp;
+	}
+
+	// //////////////////// LEAGUE FUNCTIONS /////////////////////////
+	// ///////////////////////////////////////////////////////////////
+
+	/**
+	 * this function reads data of a team in league
+	 * 
+	 * @param team
+	 * @return ArrayList of League objects
+	 */
+	public ArrayList<League> getTeamLeague(int team) {
+
+		ArrayList<League> temp = new ArrayList<League>();
+		String str = "SELECT * FROM " + TABLE_LEAGUE + " WHERE "
+				+ KEY_LEAGUE_TEAM + " = " + team;
+		System.out.println(str);
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor c = db.rawQuery(str, null);
+		if (c.getCount() != 0) {
+			c.moveToFirst();
+			do {
+				String season = c
+						.getString(c.getColumnIndex(KEY_LEAGUE_SEASON));
+				int position = c.getInt(c.getColumnIndex(KEY_LEAGUE_POSITION));
+				int points = c.getInt(c.getColumnIndex(KEY_LEAGUE_POINTS));
+				temp.add(new League(season, team, position, points));
 			} while (c.moveToNext());
 		}
 		c.close();

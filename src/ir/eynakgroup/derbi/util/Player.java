@@ -12,11 +12,12 @@ public class Player {
 	private int height;
 	private int nationalMatch;
 	private int nationalGoals;
+	private int captain;
 	private String birthPlace;
 
 	public Player(String name, String birthDate, int team, int position,
 			int entranceYear, int matchCount, int goalCount, int height,
-			int nationalMatch, int nationalGoals, String birthPlace) {
+			int nationalMatch, int nationalGoals, String birthPlace,int captain) {
 		super();
 		this.name = name;
 		this.birthDate = birthDate;
@@ -29,6 +30,8 @@ public class Player {
 		this.nationalMatch = nationalMatch;
 		this.nationalGoals = nationalGoals;
 		this.birthPlace = birthPlace;
+		this.setCaptain(captain);
+		
 	}
 
 	public String getName() {
@@ -131,11 +134,20 @@ public class Player {
 	 * 
 	 * @return : age of person in years
 	 */
-	public int getAge() {
+	public int getBirthInt() {
+		
 		int birthYear = Integer.parseInt(getBirthDate().split("-")[0]);
 		int birthMonth = Integer.parseInt(getBirthDate().split("-")[1]);
 		int birthDay = Integer.parseInt(getBirthDate().split("-")[2]);
 
 		return (birthYear * 365) + (birthMonth * 30) + (birthDay);
+	}
+
+	public int getCaptain() {
+		return captain;
+	}
+
+	public void setCaptain(int captain) {
+		this.captain = captain;
 	}
 }
