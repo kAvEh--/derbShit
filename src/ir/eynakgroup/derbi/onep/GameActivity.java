@@ -48,7 +48,7 @@ public class GameActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.one_player_question);
 		questions = new ArrayList<String[]>();
-		String[] temp1 = { "???1", "O", "X1", "X1", "X1" };
+		String[] temp1 = { "???1", "O", "D1", "D1", "D1" };
 		String[] temp2 = { "???2", "O", "X2", "X2", "X2" };
 		String[] temp3 = { "???3", "O", "X3", "X3", "X3" };
 		String[] temp4 = { "???4", "O", "X4", "X4", "X4" };
