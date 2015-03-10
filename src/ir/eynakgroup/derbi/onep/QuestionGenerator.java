@@ -246,7 +246,7 @@ public class QuestionGenerator {
 				if (players.get(i).getBirthDate().length() != 10)
 					nulls++;
 			}
-			int pivot = getRandom(nulls, players.size());
+			int pivot = getRandom(nulls, players.size()-6);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = pivot; i < players.size(); i++) {
 				if (players.get(pivot).getAge() < players.get(i).getAge())
@@ -488,7 +488,7 @@ public class QuestionGenerator {
 			int pivot = getRandom(nulls + 8, players.size());
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = nulls; i < pivot; i++) {
-				if (players.get(pivot).getEntranceYear() > players.get(i)
+				if (players.get(pivot).getEntranceYear() < players.get(i)
 						.getEntranceYear())
 					temp.add(i);
 			}
@@ -513,7 +513,7 @@ public class QuestionGenerator {
 			int pivot = getRandom(nulls, players.size() - 8);
 			ArrayList<Integer> temp = new ArrayList<Integer>();
 			for (int i = pivot; i < players.size(); i++) {
-				if (players.get(pivot).getEntranceYear() < players.get(i)
+				if (players.get(pivot).getEntranceYear() > players.get(i)
 						.getEntranceYear())
 					temp.add(i);
 			}
