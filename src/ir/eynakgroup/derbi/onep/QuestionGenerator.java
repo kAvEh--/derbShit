@@ -30,20 +30,6 @@ public class QuestionGenerator {
 		team = 1;
 		players = db.getTeamPlayers(team);
 		System.out.println("----------------------");
-		// System.out.println(getNationalGoalQ(1));
-		// System.out.println(getNationalGoalQ(-1));
-		// System.out.println(getNationalMatchQ(1));
-		// System.out.println(getNationalMatchQ(-1));
-		// System.out.println(getMatchQ(1, 1));
-		// System.out.println(getMatchQ(-1, 1));
-		// System.out.println(getGoalQ(1, 1));
-		// System.out.println(getGoalQ(-1, 1));
-		// System.out.println(getEntranceQ(1, 1));
-		// System.out.println(getEntranceQ(-1, 1));
-		// System.out.println(getHeightQ(1));
-		// System.out.println(getHeightQ(-1));
-		// System.out.println(getAgeQ(1, 1));
-		// System.out.println(getAgeQ(-1, 1));
 
 		db.close();
 	}
