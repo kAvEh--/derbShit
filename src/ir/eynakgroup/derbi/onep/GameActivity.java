@@ -54,7 +54,6 @@ public class GameActivity extends FragmentActivity {
 		questions = new ArrayList<Question>();
 		_q_generator = new QuestionGenerator(GameActivity.this);
 		ArrayList<Question> qz = _q_generator.getQuestionsObjects(0);
-		System.out.println(qz.size() + "------------------");
 		for (int i = 0; i < qz.size(); i++) {
 			questions.add(qz.get(i));
 		}
@@ -156,7 +155,6 @@ public class GameActivity extends FragmentActivity {
 		_question_counter = -1;
 
 		ArrayList<Question> qz = _q_generator.getQuestionsObjects(0);
-		System.out.println(qz.size() + "------------------");
 		for (int i = 0; i < qz.size(); i++) {
 			questions.add(qz.get(i));
 		}
@@ -186,22 +184,22 @@ public class GameActivity extends FragmentActivity {
 
 			}
 			
-			if((Integer) choices.get(0).getTag() == 1)
-				choices.get(0).setBackgroundColor(Color.GREEN);
-			else
-				choices.get(0).setBackgroundColor(Color.RED);
-			if((Integer) choices.get(1).getTag() == 1)
-				choices.get(1).setBackgroundColor(Color.GREEN);
-			else
-				choices.get(1).setBackgroundColor(Color.RED);
-			if((Integer) choices.get(2).getTag() == 1)
-				choices.get(2).setBackgroundColor(Color.GREEN);
-			else
-				choices.get(2).setBackgroundColor(Color.RED);
-			if((Integer) choices.get(3).getTag() == 1)
-				choices.get(3).setBackgroundColor(Color.GREEN);
-			else
-				choices.get(3).setBackgroundColor(Color.RED);
+//			if((Integer) choices.get(0).getTag() == 1)
+//				choices.get(0).setBackgroundColor(Color.GREEN);
+//			else
+//				choices.get(0).setBackgroundColor(Color.RED);
+//			if((Integer) choices.get(1).getTag() == 1)
+//				choices.get(1).setBackgroundColor(Color.GREEN);
+//			else
+//				choices.get(1).setBackgroundColor(Color.RED);
+//			if((Integer) choices.get(2).getTag() == 1)
+//				choices.get(2).setBackgroundColor(Color.GREEN);
+//			else
+//				choices.get(2).setBackgroundColor(Color.RED);
+//			if((Integer) choices.get(3).getTag() == 1)
+//				choices.get(3).setBackgroundColor(Color.GREEN);
+//			else
+//				choices.get(3).setBackgroundColor(Color.RED);
 		}
 	}
 
