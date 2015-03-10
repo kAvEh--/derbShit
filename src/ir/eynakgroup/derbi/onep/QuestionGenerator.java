@@ -50,7 +50,7 @@ public class QuestionGenerator {
 	public ArrayList<Question> getQuestionsObjects(int level) {
 		ArrayList<Question> temp = new ArrayList<Question>();
 		Random r = new Random();
-		while (temp.size() < 11) {
+		while (temp.size() < 10) {
 			int c = r.nextInt(99) + 1;
 			if (c > 0 && c < 12)
 				temp.add(getAgeQ(r.nextInt(10) - 5, team));
