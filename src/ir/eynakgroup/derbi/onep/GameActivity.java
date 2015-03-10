@@ -52,7 +52,7 @@ public class GameActivity extends FragmentActivity {
 		String[] temp2 = { "???2", "O", "F2", "F2", "F2" };
 		String[] temp3 = { "???3", "O", "G3", "G3", "G3" };
 		String[] temp4 = { "???4", "O", "X4", "X4", "X4" };
-		String[] temp5 = { "???5", "O", "X5", "X5", "X5" };
+		String[] temp5 = { "???5", "O", "f5", "X5", "X5" };
 		String[] temp6 = { "???6", "O", "X6", "X6", "X6" };
 		String[] temp7 = { "???7", "O", "X7", "X7", "X7" };
 		String[] temp8 = { "???8", "O", "X8", "X8", "X8" };
