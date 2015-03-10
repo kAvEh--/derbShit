@@ -1,5 +1,6 @@
 package ir.eynakgroup.derbi.util;
 
+
 public class Player {
 	private String name;
 	private String birthDate;
@@ -12,7 +13,7 @@ public class Player {
 	private int nationalMatch;
 	private int nationalGoals;
 	private String birthPlace;
-	
+
 	public Player(String name, String birthDate, int team, int position,
 			int entranceYear, int matchCount, int goalCount, int height,
 			int nationalMatch, int nationalGoals, String birthPlace) {
@@ -118,4 +119,23 @@ public class Player {
 		this.birthPlace = birthPlace;
 	}
 
+	@Override
+	public String toString() {
+
+		return name + ":" + birthDate + "|" + nationalMatch + "|"
+				+ nationalGoals;
+	}
+
+	/**
+	 * this function calculate the person's age by date of birth
+	 * 
+	 * @return : age of person in years
+	 */
+	public int getAge() {
+		int birthYear = Integer.parseInt(getBirthDate().split("-")[0]);
+		int birthMonth = Integer.parseInt(getBirthDate().split("-")[1]);
+		int birthDay = Integer.parseInt(getBirthDate().split("-")[2]);
+
+		return (birthYear * 365) + (birthMonth * 30) + (birthDay);
+	}
 }
