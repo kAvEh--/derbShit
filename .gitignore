@@ -1,28 +1,36 @@
-# built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
-# Java class files
-*.class
-
-# generated files
-bin/*
+*.pydevproject
+.metadata
+.gradle
 bin/
-gen/
-bin/classes/ir/eynakgroup/derbi/*
-bin/classes/ir/eynakgroup/derbi/
-bin/classes/ir/eynakgroup/derbi/util/
-bin/classes/ir/eynakgroup/derbi/util/*
-bin/classes/ir/eynakgroup/derbi/onep/
-bin/classes/ir/eynakgroup/derbi/onep/*
-bin/classes/ir/eynakgroup/derbi/onep/*.class
-
-# Local configuration file (sdk path, etc)
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
 local.properties
+.settings/
+.loadpath
 
-# Eclipse project files
-.classpath
+# Eclipse Core
 .project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
