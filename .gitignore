@@ -9,8 +9,15 @@
 *.class
 
 # generated files
+bin/*
 bin/
 gen/
+bin/classes/ir/eynakgroup/derbi/*
+bin/classes/ir/eynakgroup/derbi/
+bin/classes/ir/eynakgroup/derbi/util/
+bin/classes/ir/eynakgroup/derbi/util/*
+bin/classes/ir/eynakgroup/derbi/onep/
+bin/classes/ir/eynakgroup/derbi/onep/*
 
 # Local configuration file (sdk path, etc)
 local.properties
