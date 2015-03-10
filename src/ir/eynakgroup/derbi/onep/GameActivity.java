@@ -55,7 +55,7 @@ public class GameActivity extends FragmentActivity {
 		String[] temp5 = { "???5", "O", "f5", "X5", "X5" };
 		String[] temp6 = { "???6", "O", "X6", "X6", "X6" };
 		String[] temp7 = { "???7", "O", "X7", "X7", "X7" };
-		String[] temp8 = { "???8", "O", "X8", "X8", "X8" };
+		String[] temp8 = { "???8", "O", "D8", "X8", "X8" };
 		String[] temp9 = { "???9", "O", "X9", "X9", "X9" };
 		String[] temp10 = { "???10", "O", "X10", "X10", "X10" };
 		questions.add(temp1);
