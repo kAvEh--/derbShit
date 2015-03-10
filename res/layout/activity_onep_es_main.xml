@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/black_main" >
+
+        <ImageButton
+            android:id="@+id/header_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_profile_default" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" >
+
+            <ImageView
+                android:id="@+id/header_coin_ic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_coin" />
+
+            <TextView
+                android:id="@+id/header_coin_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/header_coin_ic"
+                android:text="1000"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/onep_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header_layout"
+        android:background="@drawable/bg_est" >
+
+        <TextView
+            android:id="@+id/onep_main_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="حمید رفیعیان پرچم استقلال رو بالا برده."
+            android:textColor="@color/white"
+            android:textSize="27sp" />
+
+        <RelativeLayout
+            android:id="@+id/onep_footer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" >
+
+            <ImageButton
+                android:id="@+id/onep_stat"
+                android:layout_width="170dp"
+                android:layout_height="110dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/es_stat_button" />
+
+            <ImageButton
+                android:id="@+id/onep_leaderboard"
+                android:layout_width="170dp"
+                android:layout_height="110dp"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/es_lb_button" />
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/onep_start"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/onep_footer"
+            android:layout_below="@id/onep_main_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/es_start_button" />
+    </RelativeLayout>
+
+</RelativeLayout>

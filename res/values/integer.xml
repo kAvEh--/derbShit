@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="team_es">2</integer>
+    <integer name="team_pe">1</integer>
+
+</resources>

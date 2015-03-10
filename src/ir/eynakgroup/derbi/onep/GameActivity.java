@@ -50,7 +50,7 @@ public class GameActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.one_player_question);
+		setContentView(R.layout.activity_onep_question);
 		questions = new ArrayList<Question>();
 		_q_generator = new QuestionGenerator(GameActivity.this);
 		ArrayList<Question> qz = _q_generator.getQuestionsObjects(0);
