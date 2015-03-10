@@ -1,6 +1,6 @@
 package ir.eynakgroup.derbi.onep;
 
-import ir.eynakgroup.derbi.R;
+import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

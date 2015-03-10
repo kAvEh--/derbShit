@@ -1,6 +1,6 @@
 package ir.eynakgroup.derbi.onep;
 
-import ir.eynakgroup.derbi.R;
+import android.R;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;

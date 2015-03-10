@@ -1,6 +1,5 @@
 package ir.eynakgroup.derbi.onep;
 
-import ir.eynakgroup.derbi.R;
 import ir.eynakgroup.derbi.util.AppController;
 
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,7 +24,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.astuetz.PagerSlidingTabStrip;
 
 public class OPLeaderBoardActivity extends FragmentActivity {
 	private PagerSlidingTabStrip tabs;

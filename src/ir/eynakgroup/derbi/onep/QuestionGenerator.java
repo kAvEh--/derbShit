@@ -1,11 +1,11 @@
 package ir.eynakgroup.derbi.onep;
 
-import ir.eynakgroup.derbi.R;
 import ir.eynakgroup.derbi.util.DatabaseHandler;
 import ir.eynakgroup.derbi.util.Player;
 
 import java.util.ArrayList;
 
+import android.R;
 import android.app.Activity;
 
 public class QuestionGenerator {

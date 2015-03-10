@@ -1,11 +1,10 @@
 package ir.eynakgroup.derbi.onep;
 
-import ir.eynakgroup.derbi.R;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.R;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
