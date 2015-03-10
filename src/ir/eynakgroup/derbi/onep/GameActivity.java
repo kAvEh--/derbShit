@@ -1,11 +1,13 @@
 package ir.eynakgroup.derbi.onep;
 
 import ir.eynakgroup.derbi.R;
+import ir.eynakgroup.derbi.util.Question;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -24,7 +26,7 @@ public class GameActivity extends FragmentActivity {
 	private ProgressBar timer;
 	private ArrayList<Button> choices;
 
-	private ArrayList<String[]> questions;
+	private ArrayList<Question> questions;
 	private String fonts = "BNazanin.ttf";
 
 	// CountDownTimer counter;
@@ -44,30 +46,18 @@ public class GameActivity extends FragmentActivity {
 
 	int _PACKAGE_NUM = 10;
 
+	QuestionGenerator _q_generator;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.one_player_question);
-		questions = new ArrayList<String[]>();
-		String[] temp1 = { "???1", "O", "D1", "D1", "D1" };
-		String[] temp2 = { "???2", "O", "F2", "F2", "F2" };
-		String[] temp3 = { "???3", "O", "G3", "G3", "G3" };
-		String[] temp4 = { "???4", "O", "X4", "X4", "X4" };
-		String[] temp5 = { "???5", "O", "f5", "S5", "X5" };
-		String[] temp6 = { "???6", "O", "X6", "X6", "X6" };
-		String[] temp7 = { "???7", "O", "X7", "X7", "X7" };
-		String[] temp8 = { "???8", "O", "D8", "X8", "X8" };
-		String[] temp9 = { "???9", "O", "D9", "X9", "X9" };
-		String[] temp10 = { "???10", "O", "D10", "X10", "X10" };
-		questions.add(temp1);
-		questions.add(temp2);
-		questions.add(temp3);
-		questions.add(temp4);
-		questions.add(temp5);
-		questions.add(temp6);
-		questions.add(temp7);
-		questions.add(temp8);
-		questions.add(temp9);
-		questions.add(temp10);
+		questions = new ArrayList<Question>();
+		_q_generator = new QuestionGenerator(GameActivity.this);
+		ArrayList<Question> qz = _q_generator.getQuestionsObjects(0);
+		System.out.println(qz.size() + "------------------");
+		for (int i = 0; i < qz.size(); i++) {
+			questions.add(qz.get(i));
+		}
 
 		Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts
 				+ "");
@@ -102,20 +92,25 @@ public class GameActivity extends FragmentActivity {
 
 		_question_counter++;
 
-		_question_body.setText(questions.get(_question_counter)[0]);
+		_question_body.setText(questions.get(_question_counter).getQuestion());
 
 		List<Integer> numbers = new ArrayList<Integer>();
+		numbers.add(0);
 		numbers.add(1);
 		numbers.add(2);
 		numbers.add(3);
-		numbers.add(4);
 		Collections.shuffle(numbers);
 		for (int i = 0; i < numbers.size(); i++) {
-			choices.get(i).setText(
-					questions.get(_question_counter)[numbers.get(i)]);
-			if (numbers.get(i) == 1) {
+			choices.get(i).setBackgroundColor(Color.GRAY);
+			if (numbers.get(i) == 3) {
+				choices.get(i).setText(
+						questions.get(_question_counter).getAnswer());
 				choices.get(i).setTag(1);
 			} else {
+				choices.get(i)
+						.setText(
+								questions.get(_question_counter)
+										.getFalseChoice()[numbers.get(i)]);
 				choices.get(i).setTag(0);
 			}
 		}
@@ -141,7 +136,7 @@ public class GameActivity extends FragmentActivity {
 	}
 
 	private void coolDownCounter() {
-		counter = new CountDownTimer(1000, 10) {
+		counter = new CountDownTimer(5000, 10) {
 
 			@Override
 			public void onTick(long milli) {
@@ -160,27 +155,11 @@ public class GameActivity extends FragmentActivity {
 
 		_question_counter = -1;
 
-		questions = new ArrayList<String[]>();
-		String[] temp1 = { "###1", "O", "G1", "G1", "G1" };
-		String[] temp2 = { "###2", "O", "G2", "G2", "G2" };
-		String[] temp3 = { "###3", "O", "G3", "G3", "G3" };
-		String[] temp4 = { "###4", "O", "G4", "G4", "G4" };
-		String[] temp5 = { "###5", "O", "G5", "G5", "G5" };
-		String[] temp6 = { "###6", "O", "G6", "G6", "G6" };
-		String[] temp7 = { "###7", "O", "G7", "G7", "G7" };
-		String[] temp8 = { "###8", "O", "G8", "G8", "G8" };
-		String[] temp9 = { "###9", "O", "G9", "G9", "G9" };
-		String[] temp10 = { "###10", "O", "G10", "G10", "G10" };
-		questions.add(temp1);
-		questions.add(temp2);
-		questions.add(temp3);
-		questions.add(temp4);
-		questions.add(temp5);
-		questions.add(temp6);
-		questions.add(temp7);
-		questions.add(temp8);
-		questions.add(temp9);
-		questions.add(temp10);
+		ArrayList<Question> qz = _q_generator.getQuestionsObjects(0);
+		System.out.println(qz.size() + "------------------");
+		for (int i = 0; i < qz.size(); i++) {
+			questions.add(qz.get(i));
+		}
 
 		setQuestion();
 	}
@@ -192,11 +171,13 @@ public class GameActivity extends FragmentActivity {
 			int tag = Integer.parseInt(v.getTag().toString());
 			switch (tag) {
 			case 1:
+				v.setBackgroundColor(Color.GREEN);
 				updateScore(1);
 				updateHearts(0);
 				break;
 
 			case 0:
+				v.setBackgroundColor(Color.RED);
 				timer.setProgress(0);
 				updateHearts(-1);
 				break;
@@ -204,6 +185,23 @@ public class GameActivity extends FragmentActivity {
 				break;
 
 			}
+			
+			if((Integer) choices.get(0).getTag() == 1)
+				choices.get(0).setBackgroundColor(Color.GREEN);
+			else
+				choices.get(0).setBackgroundColor(Color.RED);
+			if((Integer) choices.get(1).getTag() == 1)
+				choices.get(1).setBackgroundColor(Color.GREEN);
+			else
+				choices.get(1).setBackgroundColor(Color.RED);
+			if((Integer) choices.get(2).getTag() == 1)
+				choices.get(2).setBackgroundColor(Color.GREEN);
+			else
+				choices.get(2).setBackgroundColor(Color.RED);
+			if((Integer) choices.get(3).getTag() == 1)
+				choices.get(3).setBackgroundColor(Color.GREEN);
+			else
+				choices.get(3).setBackgroundColor(Color.RED);
 		}
 	}
 
